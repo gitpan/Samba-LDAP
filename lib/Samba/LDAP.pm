@@ -11,7 +11,7 @@ use Readonly;
 use Net::LDAP;
 use base qw( Samba::LDAP::Base );
 
-our $VERSION = '0.01_01';
+our $VERSION = '0.02_01';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -155,6 +155,7 @@ sub connect_ldap_master {
             cafile     => $self->{cafile},
         );
     }
+    $ldap_master->code && die "failed to start TLS: ", $ldap_master->error;
 
     $ldap_master->bind( $self->{masterDN}, password => $self->{masterPw}, );
     return $ldap_master;
@@ -199,6 +200,7 @@ sub connect_ldap_slave {
                 cafile     => $self->{cafile},
             );
         }
+        $ldap_master->code && die "failed to start TLS: ", $ldap_master->error;
 
         $ldap_slave->bind( $self->{masterDN}, password => $self->{masterPw}, );
         return $ldap_slave;
@@ -248,7 +250,7 @@ Samba::LDAP - Manage a Samba PDC with an LDAP Backend
 
 =head1 VERSION
 
-This document describes Samba::LDAP version 0.01_01
+This document describes Samba::LDAP version 0.02_01
 
 
 =head1 SYNOPSIS

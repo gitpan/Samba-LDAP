@@ -17,7 +17,7 @@ use Unicode::MapUTF8 qw(to_utf8 from_utf8);
 use base qw(Samba::LDAP::Base);
 use Samba::LDAP;
 
-our $VERSION = '0.01_01';
+our $VERSION = '0.02_01';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -1395,7 +1395,7 @@ Samba::LDAP::User - Manipulate a Samba LDAP User
 
 =head1 VERSION
 
-This document describes Samba::LDAP::User version 0.01_01
+This document describes Samba::LDAP::User version 0.02_01
 
 
 =head1 SYNOPSIS
@@ -1426,6 +1426,7 @@ Create a new L<Samba::LDAP::User> object
 =head2 add_user
 
 Takes many options. For example:
+    
     user =>
     oldpass =>
     newpass =>
@@ -1476,7 +1477,22 @@ that are set in F</etc/smbldap/smbldap.conf>
 =head2 make_hash
 
 =head2 change_password
+    
+    change_password( 
+                   user    => 'ghenry',
+                   oldpass => "$oldpass",
+                   newpass => "$newpass",
+                   samba   => '1', # Update only Samba pass, can be
+                                  # unix => '1' for unix pass only
+                );
 
+Change user password in LDAP Directory
+
+Checks the users exists first, then changes the password
+If user doesn't exist, returns the error etc.
+
+If no oldpass arg is passed, binds as rootdn and sets a password
+    
 =head1 DIAGNOSTICS
 
 None yet.

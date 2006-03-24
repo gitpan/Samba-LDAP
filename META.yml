@@ -24,4 +24,4 @@ requires:
   Regexp::DefaultFlags: 0.01
   Unicode::MapUTF8: 1.11
   perl: 5.6.0
-version: 0.01_01
+version: 0.02_01

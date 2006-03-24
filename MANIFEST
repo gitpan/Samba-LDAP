@@ -22,6 +22,7 @@ MANIFEST
 MANIFEST.SKIP
 META.yml
 README
+Samba-LDAP-0.02_01.tar.gz
 scripts/configure.pl
 scripts/smb.conf
 scripts/smbldap-groupadd

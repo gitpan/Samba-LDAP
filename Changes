@@ -1,5 +1,11 @@
 Revision history for Samba-LDAP
 
+0.02_01  Fri Mar 24 2006
+         - Added check for TLS connection before binding with
+           masterdn and pass, as per:
+           http://perlmonks.org/?node_id=538906
+         - Added change_pass docs
+
 0.01_01  Thu Mar 23 2006
          - Alpha release. Not complete. You've been warned!
 
