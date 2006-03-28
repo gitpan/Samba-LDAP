@@ -14,7 +14,7 @@ use Samba::LDAP;
 #use Samba::LDAP::User;
 use List::MoreUtils qw( any );
 
-our $VERSION = '0.02_01';
+our $VERSION = '0.01';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -113,7 +113,7 @@ sub add_to_group {
 }
 
 #------------------------------------------------------------------------
-# add_to_groups( $username | HoA, Aref | HoA )
+# add_to_groups( $groups_ref | HoA, Aref | HoA, $username )
 #
 # Pass in a list of groups for the user to be added to.
 #------------------------------------------------------------------------
@@ -159,7 +159,7 @@ sub add_to_groups {
     for my $group (@groups) {
         $self->add_to_group( $group, $username );
     }
-    return;
+    return 1;
 }
 
 #------------------------------------------------------------------------
@@ -230,7 +230,7 @@ sub delete_group {
 #------------------------------------------------------------------------
 # read_group_entry( $group )
 #
-# Return all group details
+# Return all posixGroup details
 #------------------------------------------------------------------------
 
 sub read_group_entry {
@@ -504,7 +504,7 @@ Samba::LDAP::Group - Manipulate Samba LDAP Groups
 
 =head1 VERSION
 
-This document describes Samba::LDAP::Group version 0.02_01
+This document describes Samba::LDAP::Group version 0.01
 
 
 =head1 SYNOPSIS
@@ -512,7 +512,7 @@ This document describes Samba::LDAP::Group version 0.02_01
     use Carp;
     use Samba::LDAP::Group;
 
-    my $Group = Samba::LDAP::Group->new()
+    my $group = Samba::LDAP::Group->new()
         or croak "Can't create object\n";
     
 
@@ -534,30 +534,103 @@ Create a new L<Samba::LDAP::Group> object
 
 =head2 add_group
 
+Not complete.
+
 =head2 add_to_group
+
+Add $username to LDAP group $group
+
+    my $result = $group->add_to_group( $group, $username);
+    print "$username added to $group\n" if $result;
 
 =head2 add_to_groups
 
+Pass in a list of groups for the user or users to be added to.
+
+For one user:
+
+    my $groups_aref = [ 'staff', 'directors', 'contractors', ];
+
+    my $result = $group->add_to_groups( $groups_aref, $username  );
+    print "$username added to groups\n" if $result;
+
+List of users and groups:
+
+    my $groups_ref = {
+                        admin => [ 'staff', 'directors', 'contractors', ],
+                        ghenry => [ 'web_team', 'finance', 'cleaners', ],
+                     };
+
+    my $result = $group->add_to_groups( $group_ref );
+    print "Added to groups\n" if $result;
+
+
 =head2 find_groups
+
+Find the groups that $username belongs to. Returns an Array of groups.
+
+    my @groups = $group->find_groups( $username );
+    print "@groups";
 
 =head2 delete_group
 
+Deletes group name from LDAP tree
+
+    my $delete_result = $group->delete_group( $group_name );
+    print "$delete_result";
+
 =head2 remove_from_group
+
+Remove the user from $group. Removes C<memberUid> and C<member> entries
+    
+    my $result = $group->remove_from_group( $group, $username )
+    print "$group removed\n" if $result;
 
 =head2 show_group
 
+Lists the entries for that group
+
+    my $group_info = $group->show_group( $group );
+    print "$group_info\n";
+
 =head2 list_groups
+
+Not complete.
 
 =head2 parse_group
 
+Check the group is either a name or number.
+
+    my $result = $group->parse_group( $userGidNumber );
+
+Not complete.
+
 =head2 is_group_member
+
+Check that the user is a member of the group already
+
+    my $result = $self->is_group_member( $dn,$userid );
+    print "$userid is a member of $dn\n" if $result;
+
 
 =head2 read_group_entry
 
+Return all posixGroup details. Similar to L<show_group> and will be
+re-organised later
+
+    my $group_info = $group->read_group_entry( $group );
+    print "$group_info\n";
+
+Utility method.
+
 =head2 read_group_entry_gid
 
+Read the group number in the LDAP Directory.
 
-Utility method
+    my $group_number = $group->read_group_entry_gid( $group );
+    print $group_number\n";
+
+Utility method.
 
 =head1 DIAGNOSTICS
 
@@ -571,9 +644,9 @@ Samba::LDAP::Group requires no configuration files or environment variables.
 
 =head1 DEPENDENCIES
 
-L<Carp>
-L<Regexp::DefaultFlags>
-L<Readonly>
+L<Carp>,
+L<Regexp::DefaultFlags>,
+L<Readonly> and
 L<List::MoreUtils>
 
 =head1 INCOMPATIBILITIES

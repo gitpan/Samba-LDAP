@@ -94,8 +94,8 @@ my $smbgroup = Samba::LDAP::Group->new()
 #sleep 5;
 
 
-#print "Checking for user 'test' - 1 means they are a Samba User\n";
-#print Dumper( $smbuser->is_samba_user( 'test' ) ); 
+print "Checking for user 'ghenry' - 1 means they are a Samba User\n";
+print Dumper( $smbuser->is_samba_user( 'ghenry' ) ); 
 
 #my @groups = $smbgroup->find_groups( 'ghenry' );
 #print "@groups\n";

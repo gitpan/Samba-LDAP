@@ -31,6 +31,8 @@ requires        'Digest::MD5'           => '2.36';
 requires        'Digest::SHA1'          => '2.11';
 requires        'MIME::Base64'          => '3.07';
 requires        'List::MoreUtils'       => '0.19';
+requires		'UNIVERSAL::require'	=> '0.10';
+requires		'File::Path'			=>	  '0';
 
 # In order to build Samba::LDAP, we need
 build_requires  'Test::More'         => '0.62';

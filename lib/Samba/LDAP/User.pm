@@ -14,10 +14,11 @@ use Digest::SHA1 qw(sha1);
 use MIME::Base64 qw(encode_base64);
 use List::MoreUtils qw( any );
 use Unicode::MapUTF8 qw(to_utf8 from_utf8);
+use UNIVERSAL::require;
 use base qw(Samba::LDAP::Base);
 use Samba::LDAP;
 
-our $VERSION = '0.02_01';
+our $VERSION = '0.01';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -72,6 +73,8 @@ Readonly my $GET_NEXT_ID_USAGE =>
 # If user doesn't exist, returns the error etc.
 #
 # If no oldpass arg is passed, binds as rootdn and sets a password
+#
+# Default is to add a Samba "and" unix password
 #------------------------------------------------------------------------
 
 sub change_password {
@@ -743,6 +746,14 @@ EOF
         $modify->code && die "failed to add entry: ", $modify->error;
     }
 
+    # Finally, set their password
+    if ( defined( $args{newpass} ) ) {
+        $self->change_password( 
+                            user    => "$args{user}",
+                            newpass => "$newpass",
+                              );
+    }
+
     $ldap->unbind;    # take down session
 
     return;
@@ -830,10 +841,11 @@ sub delete_user {
     }
 
     if ($homedir) {
-        my @rmargs = ('-rf');
+        my $module = 'File::Path';
+        $module->require or die $@;
 
-        # print "rm @rmargs $homedir\n";
-        system( 'rm', @rmargs, $homedir );
+        # Delete it!
+        rmtree($homedir);
     }
 
     my $nscd_status = system "/etc/init.d/nscd status >/dev/null 2>&1";
@@ -1395,7 +1407,7 @@ Samba::LDAP::User - Manipulate a Samba LDAP User
 
 =head1 VERSION
 
-This document describes Samba::LDAP::User version 0.02_01
+This document describes Samba::LDAP::User version 0.01
 
 
 =head1 SYNOPSIS
@@ -1492,6 +1504,9 @@ Checks the users exists first, then changes the password
 If user doesn't exist, returns the error etc.
 
 If no oldpass arg is passed, binds as rootdn and sets a password
+
+Default is set to change/add a Samba "and" Unix password. If you don't 
+want this, pass in unix => '0', or samba => '0', etc.
     
 =head1 DIAGNOSTICS
 

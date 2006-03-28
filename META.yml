@@ -17,11 +17,13 @@ requires:
   Crypt::SmbHash: 0.12
   Digest::MD5: 2.36
   Digest::SHA1: 2.11
+  File::Path: 0
   List::MoreUtils: 0.19
   MIME::Base64: 3.07
   Net::LDAP: 0.33
   Readonly: 1.03
   Regexp::DefaultFlags: 0.01
+  UNIVERSAL::require: 0.10
   Unicode::MapUTF8: 1.11
   perl: 5.6.0
-version: 0.02_01
+version: 0.01

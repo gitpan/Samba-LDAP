@@ -17,8 +17,8 @@ SKIP: {
     skip 'smbldap tools installed, so not point in testing this', 
     1 if -e '/etc/smbldap-tools/smbldap.conf';
     
-    is ( $config->find_smbldap(), '/etc/opt/IDEALX/smbldap-tools/smbldap.conf',
-        'Should return the default directory for where smbldap.conf is stored' );
+    is ( $config->find_smbldap(), 'smbldap.conf',
+        'Should return smbldap.conf bundled in the scrips directory' );
 }        
 
 SKIP: {
@@ -26,8 +26,8 @@ SKIP: {
     skip 'smbldap tools installed, so not point in testing this', 
     1 if -e '/etc/smbldap-tools/smbldap_bind.conf';
     
-    is ( $config->find_smbldap_bind(), '/etc/opt/IDEALX/smbldap-tools/smbldap_bind.conf',
-    'Should return the default directory for where smbldap_bind.conf is stored' );
+    is ( $config->find_smbldap_bind(), 'smbldap_bind.conf',
+    'Should return smbldap_bind.conf bundled in the scripts directory' );
 }
 
 SKIP: {
@@ -35,7 +35,7 @@ SKIP: {
     skip 'Samba installed, so not point in testing this', 
     1 if -e '/etc/samba/smb.conf';
     
-    is ( $config->find_samba(), '/usr/local/samba/lib/smb.conf',
-    'Should return the default directory for where smb.conf is stored' );
+    is ( $config->find_samba(), 'smb.conf',
+    'Should return smb.conf bundled in the scripts directory' );
 }
 

@@ -8,7 +8,7 @@ use Readonly;
 use Regexp::DefaultFlags;
 use base qw( Config::Tiny );
 
-our $VERSION = '0.02_01';
+our $VERSION = '0.01';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -60,8 +60,12 @@ sub find_smbldap {
     if ( -e '/etc/smbldap-tools/smbldap.conf' ) {
         $self->{smbldap_conf} = '/etc/smbldap-tools/smbldap.conf';
     }
-    else {
+    elsif ( -e '/etc/opt/IDEALX/smbldap-tools/smbldap.conf' ) {
         $self->{smbldap_conf} = '/etc/opt/IDEALX/smbldap-tools/smbldap.conf';
+    }
+    else {
+        chdir "t" if -d "t";
+        $self->{smbldap_conf} = 'smbldap.conf';
     }
 
     # Add more locations here (don't really like this technique) or use
@@ -82,9 +86,13 @@ sub find_smbldap_bind {
     if ( -e '/etc/smbldap-tools/smbldap_bind.conf' ) {
         $self->{smbldap_bind_conf} = '/etc/smbldap-tools/smbldap_bind.conf';
     }
-    else {
+    elsif ( -e '/etc/opt/IDEALX/smbldap-tools/smbldap_bind.conf' ) {
         $self->{smbldap_bind_conf} =
           '/etc/opt/IDEALX/smbldap-tools/smbldap_bind.conf';
+    }
+    else {
+        chdir "t" if -d "t";
+        $self->{smbldap_bind_conf} = 'smbldap_bind.conf';
     }
 
     return $self->{smbldap_bind_conf};
@@ -102,8 +110,12 @@ sub find_samba {
     if ( -e '/etc/samba/smb.conf' ) {
         $self->{samba_conf} = '/etc/samba/smb.conf';
     }
-    else {
+    elsif ( -e 'usr/local/samba/lib/smb.conf' ) {
         $self->{samba_conf} = '/usr/local/samba/lib/smb.conf';
+    }
+    else {
+        chdir "t" if -d "t";
+        $self->{samba_conf} = 'smb.conf'; 
     }
 
     return $self->{samba_conf};
@@ -192,7 +204,7 @@ Samba::LDAP::Config - Config file related tasks for Samba::LDAP
 
 =head1 VERSION
 
-This document describes Samba::LDAP::Config version 0.02_01
+This document describes Samba::LDAP::Config version 0.01
 
 
 =head1 SYNOPSIS
@@ -213,11 +225,7 @@ This document describes Samba::LDAP::Config version 0.02_01
 
 Various methods to find where the related Samba configuration 
 files are saved, read them in and write them out etc. 
-Subclasses L<Config::Tiny> and L<Class::Singleton>
-
-Would have used L<Config::Tiny::Singleton>, but we are using 
-various configuration files, so just decided to use 
-L<Class::Singleton> directly.
+Subclasses L<Config::Tiny>
 
 B<DEVELOPER RELEASE!>
 
@@ -231,22 +239,51 @@ Create a new L<Samba::LDAP::Config> object
 
 =head2 find_smbldap
 
-Searches in usual places for smbldap.conf and returns location
+Searches in usual places for F<smbldap.conf> and returns location
+found. 
+
+    my $smbldap_conf = $config->find_smbldap();
+
+Returns the F<smbldap.conf> in the F<scripts>, if nothing 
 found.
 
 =head2 find_smbldap_bind
 
-Searches in usual places for smbldap_bind.conf and returns location
+Searches in usual places for F<smbldap_bind.conf> and returns location
+found.
+
+    my $smbldap_bind_conf = $config->find_smbldap_bind();
+
+Returns the F<smbldap_bind.conf> in the F<scripts>, if nothing 
 found.
 
 =head2 find_samba
 
-Searches in usual places for smb.conf and returns location
+Searches in usual places for F<smb.conf> and returns location
+found.
+
+    my $smb_conf = $config->find_samba();
+
+Returns the F<smb.conf> in the F<scripts>, if nothing 
 found.
 
 =head2 read_conf
 
+Wrapper to provide an instant error message as returned by the native
+L<Config::Tiny> read method
+
+    my $conf = $config->read_conf( $filename );
+
 =head2 read_string
+
+Overrides L<Config::Tiny>'s L<read_string> to exclude the " " marks found in
+F<smbldap.conf> and F<smbldap_bind.conf> and remove section handling, as we
+don't have any [sections] in either of these files.
+
+Also substitutes the suffix hash ( ${suffix} ) with its value.
+
+Need to fix the F<smb.conf> reading. Will use L<File::Samba> or 
+L<Config::Auto> for it instead.
 
 =head1 DIAGNOSTICS
 
@@ -260,8 +297,8 @@ Samba::LDAP::Config requires no configuration files or environment variables.
 
 =head1 DEPENDENCIES
 
-L<Config::Tiny>
-L<Regexp::DefaultFlags>
+L<Config::Tiny>,
+L<Regexp::DefaultFlags> and
 L<Readonly>
 
 =head1 INCOMPATIBILITIES

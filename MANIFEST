@@ -22,9 +22,7 @@ MANIFEST
 MANIFEST.SKIP
 META.yml
 README
-Samba-LDAP-0.02_01.tar.gz
 scripts/configure.pl
-scripts/smb.conf
 scripts/smbldap-groupadd
 scripts/smbldap-groupdel
 scripts/smbldap-groupmod
@@ -40,8 +38,6 @@ scripts/smbldap-userdel
 scripts/smbldap-userinfo
 scripts/smbldap-usermod
 scripts/smbldap-usershow
-scripts/smbldap.conf
-scripts/smbldap_bind.conf
 scripts/test.pl
 t/00.load.t
 t/01.distribution.t
@@ -54,4 +50,6 @@ t/07.group.t
 t/08.user.t
 t/pod-coverage.t
 t/pod.t
-SIGNATURE                                Public-key signature (added by MakeMaker)
+t/smb.conf
+t/smbldap.conf
+t/smbldap_bind.conf
