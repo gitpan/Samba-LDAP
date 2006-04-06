@@ -14,7 +14,7 @@ use Samba::LDAP;
 #use Samba::LDAP::User;
 use List::MoreUtils qw( any );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -504,7 +504,7 @@ Samba::LDAP::Group - Manipulate Samba LDAP Groups
 
 =head1 VERSION
 
-This document describes Samba::LDAP::Group version 0.01
+This document describes Samba::LDAP::Group version 0.02
 
 
 =head1 SYNOPSIS

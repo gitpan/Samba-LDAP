@@ -53,3 +53,4 @@ t/pod.t
 t/smb.conf
 t/smbldap.conf
 t/smbldap_bind.conf
+SIGNATURE                                Public-key signature (added by MakeMaker)

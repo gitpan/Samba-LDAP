@@ -8,7 +8,7 @@ use Readonly;
 use Regexp::DefaultFlags;
 use base qw( Config::Tiny );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -204,7 +204,7 @@ Samba::LDAP::Config - Config file related tasks for Samba::LDAP
 
 =head1 VERSION
 
-This document describes Samba::LDAP::Config version 0.01
+This document describes Samba::LDAP::Config version 0.02
 
 
 =head1 SYNOPSIS

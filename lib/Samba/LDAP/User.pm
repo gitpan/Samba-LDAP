@@ -17,8 +17,9 @@ use Unicode::MapUTF8 qw(to_utf8 from_utf8);
 use UNIVERSAL::require;
 use base qw(Samba::LDAP::Base);
 use Samba::LDAP;
+use Samba::LDAP::Group;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -1407,7 +1408,7 @@ Samba::LDAP::User - Manipulate a Samba LDAP User
 
 =head1 VERSION
 
-This document describes Samba::LDAP::User version 0.01
+This document describes Samba::LDAP::User version 0.02
 
 
 =head1 SYNOPSIS

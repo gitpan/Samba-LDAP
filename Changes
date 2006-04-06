@@ -1,5 +1,8 @@
 Revision history for Samba-LDAP
 
+0.02  Thu Apr 06 2006
+      - Bug fix for Samba::LDAP::User
+
 0.01  Tues Mar 28 2006
       - Bad version upload to the CPAN and might as
         well be 0.01 now ;-)

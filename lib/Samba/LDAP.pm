@@ -11,7 +11,7 @@ use Readonly;
 use Net::LDAP;
 use base qw( Samba::LDAP::Base );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -261,7 +261,7 @@ Samba::LDAP - Manage a Samba PDC with an LDAP Backend
 
 =head1 VERSION
 
-This document describes Samba::LDAP version 0.01
+This document describes Samba::LDAP version 0.02
 
 
 =head1 SYNOPSIS

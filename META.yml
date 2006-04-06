@@ -26,4 +26,4 @@ requires:
   UNIVERSAL::require: 0.10
   Unicode::MapUTF8: 1.11
   perl: 5.6.0
-version: 0.01
+version: 0.02
