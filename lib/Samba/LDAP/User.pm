@@ -19,7 +19,7 @@ use base qw(Samba::LDAP::Base);
 use Samba::LDAP;
 use Samba::LDAP::Group;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -194,7 +194,7 @@ sub add_user {
     my %args = (
         @_,    # argument pair list goes here
     );
-
+    print "@_";
     my $username = $args{user};
 
     #my $oldpass  = $args{oldpass};
@@ -1408,7 +1408,7 @@ Samba::LDAP::User - Manipulate a Samba LDAP User
 
 =head1 VERSION
 
-This document describes Samba::LDAP::User version 0.02
+This document describes Samba::LDAP::User version 0.03
 
 
 =head1 SYNOPSIS

@@ -14,7 +14,7 @@ use Samba::LDAP;
 #use Samba::LDAP::User;
 use List::MoreUtils qw( any );
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -45,7 +45,7 @@ sub is_group_member {
     my $mesg = $ldap->search(
         base   => $dn_group,
         scope  => 'base',
-        filter => "(&(memberUid=$username))"
+        filter => "(|(memberUid=$username)(member=uid=$username,$self->{usersDN}))"
     );
     $mesg->code && die $mesg->error;
 
@@ -504,7 +504,7 @@ Samba::LDAP::Group - Manipulate Samba LDAP Groups
 
 =head1 VERSION
 
-This document describes Samba::LDAP::Group version 0.02
+This document describes Samba::LDAP::Group version 0.03
 
 
 =head1 SYNOPSIS
