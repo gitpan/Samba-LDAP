@@ -8,7 +8,7 @@ use Readonly;
 use Regexp::DefaultFlags;
 use base qw( Config::Tiny );
 
-our $VERSION = '0.03';
+our $VERSION = '0.05';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -64,7 +64,9 @@ sub find_smbldap {
         $self->{smbldap_conf} = '/etc/opt/IDEALX/smbldap-tools/smbldap.conf';
     }
     else {
-        chdir "t" if -d "t";
+        if ( -d 't' ) {
+            chdir 't';
+        }
         $self->{smbldap_conf} = 'smbldap.conf';
     }
 
@@ -91,7 +93,9 @@ sub find_smbldap_bind {
           '/etc/opt/IDEALX/smbldap-tools/smbldap_bind.conf';
     }
     else {
-        chdir "t" if -d "t";
+        if ( -d 't' ) {
+            chdir 't';
+        }
         $self->{smbldap_bind_conf} = 'smbldap_bind.conf';
     }
 
@@ -114,8 +118,10 @@ sub find_samba {
         $self->{samba_conf} = '/usr/local/samba/lib/smb.conf';
     }
     else {
-        chdir "t" if -d "t";
-        $self->{samba_conf} = 'smb.conf'; 
+        if ( -d 't' ) {
+            chdir 't';
+        }
+        $self->{samba_conf} = 'smb.conf';
     }
 
     return $self->{samba_conf};
@@ -170,7 +176,9 @@ sub read_string {
 
             # Save what's after suffix=, temporarily. (don't like this
             # technique, will come back to it later though)
-            $self->{sf_val} = $after_equals if ( $before_equals eq 'suffix' );
+            if ( $before_equals eq 'suffix' ) {
+                $self->{sf_val} = $after_equals;
+            }
 
             # Replace ${suffix} with what was saved above
             $after_equals =~ s{ $SUFFIX_CHARS }{$self->{sf_val}};
@@ -204,7 +212,7 @@ Samba::LDAP::Config - Config file related tasks for Samba::LDAP
 
 =head1 VERSION
 
-This document describes Samba::LDAP::Config version 0.03
+This document describes Samba::LDAP::Config version 0.05
 
 
 =head1 SYNOPSIS

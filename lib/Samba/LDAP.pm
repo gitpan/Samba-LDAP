@@ -11,7 +11,7 @@ use Readonly;
 use Net::LDAP;
 use base qw( Samba::LDAP::Base );
 
-our $VERSION = '0.03';
+our $VERSION = '0.05';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -144,24 +144,24 @@ sub connect_ldap_master {
         port    => $self->{masterPort},
         version => 3,
         timeout => 60,
-      )
-      or die "LDAP Error: Can't contact master ldap server ($@)";
+    ) or die "LDAP Error: Can't contact master ldap server ($@)";
 
     my $ldap_tls;
     if ( $self->{ldapTLS} == 1 ) {
         $ldap_tls = $ldap_master->start_tls(
-                verify     => $self->{verify},
-                clientcert => $self->{clientcert},
-                clientkey  => $self->{clientkey},
-                cafile     => $self->{cafile},
+            verify     => $self->{verify},
+            clientcert => $self->{clientcert},
+            clientkey  => $self->{clientkey},
+            cafile     => $self->{cafile},
         );
-        # Check TLS has started before binding
-        $ldap_tls->code && die "Failed to start TLS: ", $ldap_tls->error;
-    }
-    
 
-    my $result = $ldap_master->bind( $self->{masterDN}, password => $self->{masterPw}, );
-    $result->code && die("Bind error: ", $result->error, "\n");
+        # Check TLS has started before binding
+        $ldap_tls->code && die 'Failed to start TLS: ', $ldap_tls->error;
+    }
+
+    my $result =
+      $ldap_master->bind( $self->{masterDN}, password => $self->{masterPw}, );
+    $result->code && die 'Bind error: ', $result->error, "\n";
 
     return $ldap_master;
 }
@@ -183,7 +183,7 @@ sub connect_ldap_slave {
 
       )
       or carp "LDAP error: Can't contact slave ldap server ($@)\n
-	           =>trying to contact the master server\n";
+               =>trying to contact the master server\n";
 
     if ( !$ldap_slave ) {
 
@@ -193,28 +193,28 @@ sub connect_ldap_slave {
             port    => $self->{masterPort},
             version => 3,
             timeout => 60,
-          )
-          or die "LDAP error: Can't contact master ldap server ($@)\n";
+        ) or die "LDAP error: Can't contact master ldap server ($@)\n";
     }
 
     if ($ldap_slave) {
-    my $ldap_tls;
-    if ( $self->{ldapTLS} == 1 ) {
-        $ldap_tls = $ldap_slave->start_tls(
+        my $ldap_tls;
+        if ( $self->{ldapTLS} == 1 ) {
+            $ldap_tls = $ldap_slave->start_tls(
                 verify     => $self->{verify},
                 clientcert => $self->{clientcert},
                 clientkey  => $self->{clientkey},
                 cafile     => $self->{cafile},
-        );
-        # Check TLS has started before binding
-        $ldap_tls->code && die "Failed to start TLS: ", $ldap_tls->error;
-    }
-    
+            );
 
-    my $result = $ldap_slave->bind( $self->{slaveDN}, password => $self->{slavePw}, );
-    $result->code && die("Bind error: ", $result->error, "\n");
+            # Check TLS has started before binding
+            $ldap_tls->code && die 'Failed to start TLS: ', $ldap_tls->error;
+        }
 
-    return $ldap_slave;
+        my $result =
+          $ldap_slave->bind( $self->{slaveDN}, password => $self->{slavePw}, );
+        $result->code && die 'Bind error: ', $result->error, "\n";
+
+        return $ldap_slave;
     }
 
     return;
@@ -261,7 +261,7 @@ Samba::LDAP - Manage a Samba PDC with an LDAP Backend
 
 =head1 VERSION
 
-This document describes Samba::LDAP version 0.03
+This document describes Samba::LDAP version 0.05
 
 
 =head1 SYNOPSIS

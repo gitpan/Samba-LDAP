@@ -8,7 +8,7 @@ use strict;
 use base qw(Class::Base);
 use Samba::LDAP::Config;
 
-our $VERSION = '0.03';
+our $VERSION = '0.05';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -75,7 +75,7 @@ Samba::LDAP::Base - Base class module implementing common functionality
 
 =head1 VERSION
 
-This document describes Samba::LDAP::Base version 0.03
+This document describes Samba::LDAP::Base version 0.05
 
 =head1 SYNOPSIS
 

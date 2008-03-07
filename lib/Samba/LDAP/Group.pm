@@ -14,7 +14,7 @@ use Samba::LDAP;
 #use Samba::LDAP::User;
 use List::MoreUtils qw( any );
 
-our $VERSION = '0.03';
+our $VERSION = '0.05';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -44,7 +44,7 @@ sub is_group_member {
 
     my $mesg = $ldap->search(
         base   => $dn_group,
-        scope  => 'base',
+        scope  => 'sub',
         filter => "(|(memberUid=$username)(member=uid=$username,$self->{usersDN}))"
     );
     $mesg->code && die $mesg->error;
@@ -322,7 +322,7 @@ sub find_groups {
     my $userdn = "uid=$user,$self->{usersdn}";
     my $mesg2  = $ldap->search(
         base   => $self->{suffix},
-        scope  => $self->{scope},
+        scope  => 'sub',
         filter => "(&(objectclass=groupOfNames)(member=$userdn))"
     );
     $mesg2->code && die $mesg2->error;
@@ -439,6 +439,18 @@ sub _get_group_dn {
         $self->{dn} = $entry->dn;
     }
 
+    # For OX AddressAdmins search
+    my $mesg2  = $ldap->search(
+        base   => $self->{suffix},
+        scope  => $self->{scope},
+        filter => "(&(objectclass=groupOfNames)(cn=$group))"
+    );
+    $mesg2->code && die $mesg2->error;
+
+    for my $entry ( $mesg2->all_entries ) {
+        $self->{dn} = $entry->dn;
+    }
+
     if ( !$self->{dn} ) {
         croak "Can not find $group Group";
     }
@@ -504,7 +516,7 @@ Samba::LDAP::Group - Manipulate Samba LDAP Groups
 
 =head1 VERSION
 
-This document describes Samba::LDAP::Group version 0.03
+This document describes Samba::LDAP::Group version 0.05
 
 
 =head1 SYNOPSIS

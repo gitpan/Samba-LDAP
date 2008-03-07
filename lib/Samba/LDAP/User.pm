@@ -19,7 +19,7 @@ use base qw(Samba::LDAP::Base);
 use Samba::LDAP;
 use Samba::LDAP::Group;
 
-our $VERSION = '0.03';
+our $VERSION = '0.05';
 
 #
 # Add Log::Log4perl to all our classes!!!!
@@ -97,7 +97,13 @@ sub change_password {
       if ( defined( $args{oldpass} ) eq $args{newpass} );
 
     # Set the $dn
-    my $dn = "uid=$args{user},$self->{usersdn}";
+    my $dn;
+    if ( defined $args{dn} ) {
+        $dn = $args{dn};
+    }
+    else {
+        $dn = "uid=$args{user},$self->{usersdn}";
+    }
 
     if ( $args{user} && $args{oldpass} && $args{newpass} ) {
         $self->{masterDN} = "uid=$args{user},$self->{usersdn}";
@@ -194,7 +200,6 @@ sub add_user {
     my %args = (
         @_,    # argument pair list goes here
     );
-    print "@_";
     my $username = $args{user};
 
     #my $oldpass  = $args{oldpass};
@@ -606,7 +611,7 @@ sub add_user {
         $add->code && warn "failed to add entry: ", $add->error;
 
         my $modify2 = $ldap->modify(
-"cn=AddressAdmins,o=AddressBook,ou=OxObjects,dc=suretecsystems,dc=com",
+            "cn=AddressAdmins,o=AddressBook,ou=OxObjects,$self->{suffix}",
             changes => [ add => [ member => "uid=$username,$self->{usersdn}" ] ]
         );
         $modify2->code && die "failed to modify entry: ", $modify2->error;
@@ -728,7 +733,7 @@ EOF
             push( @adds, 'sambaNTPassword'      => "XXX" );
         }
         my $modify =
-          $ldap->modify( "uid=$username,$self->{usersdn}", add => { @adds } );
+          $ldap->modify( "uid=$username,$self->{usersdn}", add => {@adds} );
 
         $modify->code && die "failed to add entry: ", $modify->error;
     }
@@ -749,10 +754,10 @@ EOF
 
     # Finally, set their password
     if ( defined( $args{newpass} ) ) {
-        $self->change_password( 
-                            user    => "$args{user}",
-                            newpass => "$newpass",
-                              );
+        $self->change_password(
+            user    => "$args{user}",
+            newpass => "$newpass",
+        );
     }
 
     $ldap->unbind;    # take down session
@@ -795,9 +800,11 @@ sub delete_user {
     my $group  = Samba::LDAP::Group->new();
     my @groups = $group->find_groups($user);
 
-    for my $gname (@groups) {
-        if ( $gname ne "" ) {
-            $group->remove_from_group( $gname, $user );
+    if (@groups) {
+        for my $gname (@groups) {
+            if ( $gname ne "" ) {
+                $group->remove_from_group( $gname, $user );
+            }
         }
     }
 
@@ -955,8 +962,7 @@ sub is_valid_user {
             port    => $self->{masterPort},
             version => 3,
             timeout => 60,
-          )
-          or carp "LDAP error: Can't contact master ldap server ($@)\n";
+        ) or carp "LDAP error: Can't contact master ldap server ($@)\n";
     }
 
     if ($ldap_slave) {
@@ -1390,7 +1396,7 @@ sub _subst_user {
 #------------------------------------------------------------------------
 
 sub _make_salt {
-    my $self   = shift;
+    my $self = shift;
     my $length = shift || '32';
 
     my @tab = ( '.', '/', 0 .. 9, 'A' .. 'Z', 'a' .. 'z' );
@@ -1408,7 +1414,7 @@ Samba::LDAP::User - Manipulate a Samba LDAP User
 
 =head1 VERSION
 
-This document describes Samba::LDAP::User version 0.03
+This document describes Samba::LDAP::User version 0.05
 
 
 =head1 SYNOPSIS

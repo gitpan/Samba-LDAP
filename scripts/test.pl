@@ -89,16 +89,16 @@ my $smbgroup = Samba::LDAP::Group->new()
 #print Dumper( $smbuser->disable_user('test') ); 
 
 #print "Deleting user 'ghenry'\n";
-#print Dumper( $smbuser->delete_user( user => 'ghenry' ) ); 
+#print Dumper( $smbuser->delete_user( user => 'andrew6' ) ); 
 #print "Waiting for 5 secs\n";
 #sleep 5;
 
 
-print "Checking for user 'ghenry' - 1 means they are a Samba User\n";
-print Dumper( $smbuser->is_samba_user( 'ghenry' ) ); 
+#print "Checking for user 'ghenry' - 1 means they are a Samba User\n";
+#print Dumper( $smbuser->is_samba_user( 'ghenry' ) ); 
 
-#my @groups = $smbgroup->find_groups( 'ghenry' );
-#print "@groups\n";
+my @groups = $smbgroup->find_groups( 'andrew6' );
+print "@groups\n";
 
 #print "Adding user 'test'\n";
 #print Dumper( $smbuser->add_user( 

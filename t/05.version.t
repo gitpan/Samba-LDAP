@@ -12,5 +12,5 @@ my $version = Samba::LDAP->new();
 isa_ok ( $version, 'Samba::LDAP' );
 can_ok( $version, qw( module_version ) );
 
-is ( $version->module_version(), '0.03', 'Samba::LDAP version is currently
-0.03' );
+is ( $version->module_version(), '0.05', 'Samba::LDAP version is currently
+0.05' );

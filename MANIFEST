@@ -16,6 +16,7 @@ lib/Samba/LDAP.pm
 lib/Samba/LDAP/Base.pm
 lib/Samba/LDAP/Config.pm
 lib/Samba/LDAP/Group.pm
+lib/Samba/LDAP/Machine.pm
 lib/Samba/LDAP/User.pm
 Makefile.PL
 MANIFEST
@@ -48,8 +49,10 @@ t/05.version.t
 t/06.main.t
 t/07.group.t
 t/08.user.t
+t/09.machine.t
 t/pod-coverage.t
 t/pod.t
 t/smb.conf
 t/smbldap.conf
 t/smbldap_bind.conf
+SIGNATURE                                Public-key signature (added by MakeMaker)

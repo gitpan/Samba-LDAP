@@ -1,5 +1,13 @@
 Revision history for Samba-LDAP
 
+0.05  Fri Mar 07 2008
+      - #33887: User's DN in User.pm's set_password is incorrectly assumed
+
+0.04  Fri Apr 14 2006
+      - Fixed Member not getting deleted from AddressAdmins
+        group, when user is deleted.
+      - Various debugging things left over and now removed
+
 0.03  Fri Apr 07 2006
       - Better search for group members in 
         Samba::LDAP::Group
